@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,13 @@ Route::post('/products/{product}/rate', [SalesController::class, 'rate'])->name(
 
 // Wishlist functionality
 Route::post('/products/{product}/wishlist', [SalesController::class, 'wishlist'])->name('products.wishlist')->middleware('auth');
+
+// Product CRUD routes
+Route::resource('products', ProductController::class)->middleware('auth');
+Route::post('/products/{product}/download', [ProductController::class, 'download'])->name('products.download')->middleware('auth');
+Route::post('/products/{product}/toggle-featured', [ProductController::class, 'toggleFeatured'])->name('products.toggle-featured')->middleware('auth');
+Route::post('/products/{product}/duplicate', [ProductController::class, 'duplicate'])->name('products.duplicate')->middleware('auth');
+Route::post('/products/bulk-action', [ProductController::class, 'bulkAction'])->name('products.bulk-action')->middleware('auth');
 
 // Other routes that would be referenced in the layout
 Route::get('/dashboard', function () {
