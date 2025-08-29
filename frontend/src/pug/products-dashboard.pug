@@ -851,5 +851,18 @@ block content
 									+control('actions_up')
 					.statistics__foot
 						button.button-stroke.statistics__button Load more
-
-	
+		.page__col
+			.card
+				.card__head
+					.title-blue.card__title Products List
+					.card__select
+						select.select.select_small(name="category")
+							option(value="all") All Categories
+							option(value="Design") Design
+							option(value="Development") Development
+							option(value="Marketing") Marketing
+							option(value="Business") Business
+							option(value="Education") Education
+							option(value="Entertainment") Entertainment
+				.products-list
+					// Products will be dynamically loaded here
