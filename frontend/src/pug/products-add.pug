@@ -9,7 +9,7 @@ block content
 	.create
 		.create__row
 			.create__col
-				.create__card.card
+				form#product-form.create__card.card
 					.card__head
 						.title-green.card__title Name & description
 						a.button-stroke.button-small.card__button(href="products-dashboard.html")
@@ -20,75 +20,92 @@ block content
 							.tooltip(title="Maximum 100 characters. No HTML or emoji allowed")
 								+i('info')
 						.field__wrap
-							input.field__input(type="text" name="title" required)
-					+editor('Description', 'Description')
+							input.field__input(type="text" name="title" required placeholder="Enter product title")
+					.field
+						.field__label Description
+							.tooltip(title="Describe your product in detail")
+								+i('info')
+						.field__wrap
+							textarea.field__input(name="description" required placeholder="Enter product description" rows="4")
 					.create__group
 						.field
 							.field__label Key features
 								.tooltip(title="Maximum 100 characters. No HTML or emoji allowed")
 									+i('info')
 							.field__wrap
-								input.field__input(type="text" name="value1" placeholder="Value" required)
+								input.field__input(type="text" name="feature1" placeholder="Feature 1" required)
 						.field
 							.field__wrap
-								input.field__input(type="text" name="value2" placeholder="Value" required)
+								input.field__input(type="text" name="feature2" placeholder="Feature 2")
 						.field
 							.field__wrap
-								input.field__input(type="text" name="value2" placeholder="Value" required)
+								input.field__input(type="text" name="feature3" placeholder="Feature 3")
 						.field
 							.field__wrap
-								input.field__input(type="text" name="value2" placeholder="Value" required)
+								input.field__input(type="text" name="feature4" placeholder="Feature 4")
 				.create__card.card
 					.card__head
 						.title-blue.card__title Images & CTA
-					+file('Cover images', 'Maximum 100 characters. No HTML or emoji allowed', 'Click or drop image')
 					.field
-						.field__label Dropdown
-							.tooltip(title="Maximum 100 characters. No HTML or emoji allowed")
+						.field__label Product Image URL
+							.tooltip(title="Enter image URL for your product")
 								+i('info')
 						.field__wrap
-							select.select
-								option Purchase now
-								option Purchase tomorrow
-								option Buy later
+							input.field__input(type="url" name="image" placeholder="https://example.com/image.jpg")
+					.field
+						.field__label Call to Action
+							.tooltip(title="Select the call to action for your product")
+								+i('info')
+						.field__wrap
+							select.select(name="cta")
+								option(value="purchase-now") Purchase now
+								option(value="purchase-tomorrow") Purchase tomorrow
+								option(value="buy-later") Buy later
 				.create__card.card
 					.card__head
 						.title-green.card__title Price
 					.field.field_currency
 						.field__label Amount
-							.tooltip(title="Small description")
+							.tooltip(title="Set the price for your product")
 								+i('info')
 						.field__wrap
-							input.field__input(type="text" name="amount" required)
+							input.field__input(type="number" name="price" step="0.01" min="0" required placeholder="0.00")
 							.field__currency $
 					.create__line
-						.create__info Allow customers to pay they want
-							.tooltip(title="Maximum 100 characters. No HTML or emoji allowed")
+						.create__info Allow customers to pay what they want
+							.tooltip(title="Enable pay-what-you-want pricing")
 								+i('info')
-						+switch(true)
+						label.switch
+							input.switch__input(type="checkbox" name="pay-what-you-want")
+							span.switch__inner
+								span.switch__box
 					.create__fieldset
 						.field.field_currency
 							.field__label Minimum amount
 							.field__wrap
-								input.field__input(type="text" name="minimum-amount" required)
+								input.field__input(type="number" name="minimum-amount" step="0.01" min="0" placeholder="0.00")
 								.field__currency $
 						.field.field_currency
 							.field__label Suggested amount
 							.field__wrap
-								input.field__input(type="text" name="suggested-amount" required)
+								input.field__input(type="number" name="suggested-amount" step="0.01" min="0" placeholder="0.00")
 								.field__currency $
 				.create__card.card
 					.card__head
-						.title-purple.card__title Category & attibutes
+						.title-purple.card__title Category & attributes
 					.field
 						.field__label Category
-							.tooltip(title="Maximum 100 characters. No HTML or emoji allowed")
+							.tooltip(title="Select a category for your product")
 								+i('info')
 						.field__wrap
-							select.select
-								option Select category
-								option Category 1
-								option Category 2
+							select.select(name="category" required)
+								option(value="") Select category
+								option(value="Design") Design
+								option(value="Development") Development
+								option(value="Marketing") Marketing
+								option(value="Business") Business
+								option(value="Education") Education
+								option(value="Entertainment") Entertainment
 					.create__label Compatibility
 						.tooltip(title="Maximum 100 characters. No HTML or emoji allowed")
 							+i('info')
@@ -205,10 +222,10 @@ block content
 	.panel
 		.panel__info
 			+i('check-all')
-			| Last saved <span>Oct 4, 2021 - 23:32</span>
+			| Last saved <span id="last-saved">Never</span>
 		.panel__btns
-			button.button-stroke.panel__button Save Draft
-			button.button.panel__button Publish now
+			button.button-stroke.panel__button(type="button" onclick="productCRUD.saveDraft()") Save Draft
+			button.button.panel__button(type="submit" form="product-form") Publish now
 			.actions.actions_up
 				button.actions__button
 					+i('more-horizontal')

@@ -848,3 +848,71 @@ $(".creators__button:first-child").on("click", function () {
 $(".follower__button_follow").on("click", function () {
     $(this).toggleClass("active");
 });
+
+// CRUD System Integration
+document.addEventListener('DOMContentLoaded', function() {
+    // Load CRUD system
+    if (typeof ProductCRUD !== 'undefined') {
+        window.productCRUD = new ProductCRUD();
+    }
+    
+    // Auto-save functionality for forms
+    const form = document.querySelector('#product-form');
+    if (form) {
+        let autoSaveTimer;
+        const inputs = form.querySelectorAll('input, textarea, select');
+        
+        inputs.forEach(input => {
+            input.addEventListener('input', () => {
+                clearTimeout(autoSaveTimer);
+                autoSaveTimer = setTimeout(() => {
+                    // Auto-save to localStorage
+                    const formData = new FormData(form);
+                    const data = {};
+                    formData.forEach((value, key) => {
+                        data[key] = value;
+                    });
+                    localStorage.setItem('productFormDraft', JSON.stringify(data));
+                    
+                    // Show auto-save indicator
+                    showAutoSaveIndicator();
+                }, 2000);
+            });
+        });
+        
+        // Load draft on page load
+        const draft = localStorage.getItem('productFormDraft');
+        if (draft) {
+            const data = JSON.parse(draft);
+            Object.keys(data).forEach(key => {
+                const input = form.querySelector(`[name="${key}"]`);
+                if (input) {
+                    input.value = data[key];
+                }
+            });
+        }
+    }
+    
+    // Auto-save indicator
+    function showAutoSaveIndicator() {
+        let indicator = document.querySelector('.auto-save-indicator');
+        if (!indicator) {
+            indicator = document.createElement('div');
+            indicator.className = 'auto-save-indicator';
+            indicator.textContent = 'Auto-saved';
+            document.body.appendChild(indicator);
+        }
+        
+        indicator.classList.add('visible');
+        setTimeout(() => {
+            indicator.classList.remove('visible');
+        }, 2000);
+    }
+    
+    // Update last saved time
+    const lastSavedElement = document.getElementById('last-saved');
+    if (lastSavedElement) {
+        const now = new Date();
+        lastSavedElement.textContent = now.toLocaleString();
+    }
+});
